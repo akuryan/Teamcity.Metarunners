@@ -7,6 +7,10 @@
       <param name="system.Platform" value="Any CPU" spec="text description='Target platform for compilation' display='normal' label='Target platform' validationMode='not_empty'" />
       <param name="system.Configuration" value="Release" spec="text description='Build configuration' display='normal' label='Build Configuration' validationMode='not_empty'" />
       <param name="sonar.parameters" value="%additional_sonar_parameters%" spec="text description='Placeholder variable to be updated by replacer script' readOnly='true' " />
+      <param name="sonar.projectKey" value="%sonarProjectKey%" spec="text description='SonarQube project key' label='SQ Project key' validationMode='not_empty' " />
+      <param name="sonar.projectName" value="%system.teamcity.buildConfName% (%vcs.branch.name% branch)" spec="text description='SonarQube project name' label='SQ Project Name' validationMode='not_empty' " />
+      <param name="sonar.url" value="" spec="text description='SonarQube URL' label='SQ URL' validationMode='not_empty' " />
+      <param name="sonar.authKey" value="" spec="text description='SonarQube authehtication key' label='SQ AuthKey' validationMode='not_empty' " />
     </parameters>
     <build-runners>
       <runner name="NuGet Installer" type="jb.nuget.installer">
@@ -39,6 +43,20 @@
         <parameters>
           <param name="command.executable" value="echo" />
           <param name="command.parameters" value="##teamcity[setParameter name='env.PATH' value='%env.PATH%;%system.TeamCityCiToolsPath%\CI.Builds\Programs\msbuild-sq-scanner']"/>
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner name="Start scanner" type="simpleRunner">
+        <parameters>
+          <param name="command.executable" value="MSBuild.SonarQube.Runner.exe" />
+          <param name="command.parameters" value="begin /key:%sonar.projectKey% /name:%sonar.projectName% /version:%build.number% /d:sonar.host.url=%sonar.url% /d:sonar.login=%sonar.authKey% %sonar.parameters%"/>
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner name="Stop scanner" type="simpleRunner">
+        <parameters>
+          <param name="command.executable" value="MSBuild.SonarQube.Runner.exe" />
+          <param name="command.parameters" value="end /d:sonar.host.url=%sonar.url% /d:sonar.login=%sonar.authKey%"/>
           <param name="teamcity.step.mode" value="default" />
         </parameters>
       </runner>
