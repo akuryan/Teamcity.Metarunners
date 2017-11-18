@@ -11,6 +11,7 @@
       <param name="sonar.projectName" value="%system.teamcity.buildConfName% (%vcs.branch.name% branch)" spec="text description='SonarQube project name' label='SQ Project Name' validationMode='not_empty' " />
       <param name="sonar.url" value="" spec="text description='SonarQube URL' label='SQ URL' validationMode='not_empty' " />
       <param name="sonar.authKey" value="" spec="text description='SonarQube authehtication key' label='SQ AuthKey' validationMode='not_empty' " />
+      <param name="msbuild.target" value="Rebuild" spec="select data_2='Build' data_1='Rebuild' display='normal'" />
     </parameters>
     <build-runners>
       <runner name="NuGet Installer" type="jb.nuget.installer">
@@ -51,6 +52,27 @@
           <param name="command.executable" value="MSBuild.SonarQube.Runner.exe" />
           <param name="command.parameters" value="begin /key:%sonar.projectKey% /name:%sonar.projectName% /version:%build.number% /d:sonar.host.url=%sonar.url% /d:sonar.login=%sonar.authKey% %sonar.parameters%"/>
           <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner name="Deliver folder" type="MSBuild">
+        <parameters>
+          <param name="build-file-path" value="%sln.path%" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Sort" value="0" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Type" value="1" />
+          <param name="dotNetCoverage.NCover.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover3.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover3.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.PartCover.Reg" value="selected" />
+          <param name="dotNetCoverage.PartCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.PartCover.platformVersion" value="v2.0" />
+          <param name="msbuild_version" value="14.0" />
+          <param name="run-platform" value="x64" />
+          <param name="targets" value="%msbuild.target%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolsVersion" value="14.0" />
         </parameters>
       </runner>
       <runner name="Stop scanner" type="simpleRunner">
