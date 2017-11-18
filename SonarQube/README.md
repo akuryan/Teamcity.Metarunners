@@ -2,6 +2,8 @@
 
 Copy SonarQubeCsAnalysis.xml to <TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners (if this metarunner shall be accessible to all projects)
 
+files\scripts contents must be placed at %system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1 (so, you are in control where to place the script)
+
 This meta-runner is designed to solve https://github.com/JetBrains/TeamCity.SonarQubePlugin/issues/40 (current TeamCity meta-runner does not support SonarC# v.6+ analyzer).
 
 Since I already use https://github.com/JetBrains/TeamCity.SonarQubePlugin at my servers - there is one step in meta-runner to ease conversion of previuos parameters (replace '-D' with '/d:')
