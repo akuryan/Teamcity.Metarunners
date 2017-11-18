@@ -6,7 +6,7 @@ param(
 
 if (![string]::IsNullOrEmpty($params))
 {
-  $changedParams = $params.Replace("-D","/d:")
+  $changedParams = $params.Replace("-D","/d:").replace("`n"," ").replace("`r"," ")
   "##teamcity[setParameter name='sonar.parameters' value='$changedParams']"
 }
 
