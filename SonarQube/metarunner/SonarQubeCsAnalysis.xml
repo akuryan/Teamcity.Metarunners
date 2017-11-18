@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta-runner name="SonarQube:: C# analysis">
+  <description>Metarunner used to execute SonarQube C# analysis</description>
+  <settings>
+    <parameters>
+      <param name="sln.path" value="%sources_folder_name_in_solution%/%SlnFile%" spec="text description='Path to solution file (required to restore NuGet packages and MsBuild)' display='normal' label='Solution file path' validationMode='not_empty'" />
+      <param name="system.Platform" value="Any CPU" spec="text description='Target platform for compilation' display='normal' label='Target platform' validationMode='not_empty'" />
+      <param name="system.Configuration" value="Release" spec="text description='Build configuration' display='normal' label='Build Configuration' validationMode='not_empty'" />
+    </parameters>
+    <build-runners>
+      <runner name="NuGet Installer" type="jb.nuget.installer">
+        <parameters>
+          <param name="nuget.path" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%" />
+          <param name="nuget.sources" value="%nuget.packages.source%" />
+          <param name="nuget.updatePackages.mode" value="sln" />
+          <param name="nuget.use.restore" value="restore" />
+          <param name="sln.path" value="%sln.path%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolPathSelector" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <requirements />
+  </settings>
+</meta-runner>
