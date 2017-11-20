@@ -6,7 +6,7 @@
       <param name="sln.path" value="%sources_folder_name_in_solution%/%SlnFile%" spec="text description='Path to solution file (required to restore NuGet packages and MsBuild)' display='normal' label='Solution file path' validationMode='not_empty'" />
       <param name="system.Platform" value="Any CPU" spec="text description='Target platform for compilation' display='normal' label='Target platform' validationMode='not_empty'" />
       <param name="system.Configuration" value="Release" spec="text description='Build configuration' display='normal' label='Build Configuration' validationMode='not_empty'" />
-      <param name="sonar.parameters" value="%additional_sonar_parameters%" spec="text description='Placeholder variable to be updated by replacer script' readOnly='true' " />
+      <param name="env.sonarParameters" value="%additional_sonar_parameters%" spec="text description='Content of this will be used to update %env.sonar.parameters% while replacing -D by /d:' readOnly='true' " />
       <param name="sonar.scanner.root" value="%system.TeamCityCiToolsPath%\CI.Builds\Programs\msbuild-sq-scanner" spec="text description='SonarQube msbuild scanner root folder' label='SQ Scanner root folder' validationMode='not_empty' " />
       <param name="sonar.projectKey" value="%sonarProjectKey%" spec="text description='SonarQube project key' label='SQ Project key' validationMode='not_empty' " />
       <param name="sonar.projectName" value="%system.teamcity.buildConfName% (%vcs.branch.name% branch)" spec="text description='SonarQube project name' label='SQ Project Name' validationMode='not_empty' " />
@@ -34,7 +34,7 @@
           <param name="jetbrains_powershell_execution" value="PS1" />
           <param name="jetbrains_powershell_minVersion" value="4.0" />
           <param name="jetbrains_powershell_noprofile" value="true" />
-          <param name="jetbrains_powershell_scriptArguments" value="-params ""%sonar.parameters%"" -sqScannerRoot %sonar.scanner.root%" />
+          <param name="jetbrains_powershell_scriptArguments" value="-sqScannerRoot %sonar.scanner.root%" />
           <param name="jetbrains_powershell_script_file" value="%system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1" />
           <param name="jetbrains_powershell_script_mode" value="FILE" />
           <param name="teamcity.build.workingDir" value="%system.TeamCityCiToolsPath%\CI.Builds\Scripts\" />
