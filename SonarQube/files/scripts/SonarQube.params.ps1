@@ -16,19 +16,16 @@ if (![string]::IsNullOrEmpty($sqScannerRoot)) {
 
 $params = (Get-Item Env:\sonarParameters).Value;
 if (![string]::IsNullOrEmpty($params)) {
+  Write-Host "Params in settings: $params"
   if ($params.Contains("-D")) {
     $paramsCollection = $params -split "-D"
     $changedParams = ""
     foreach ($p in $paramsCollection) {
       if ([string]::IsNullOrEmpty($p)) { continue }
-
-      if ($p.Contains('`"')) {
-        $p = "/d:" + $p + " "
-      }
-      else {
-        $p = "/d:" + $p.replace("=", "=`"") + "`"" + " "
-      }
-      Write-Host "p: $p"
+      Write-Host "Initial p: $p"
+      $p = "/d:" + $p.replace("=", "=`"") + "`"" + " "
+      $p = $p.replace("`n","").replace("`r","").Replace("`"`"", "`"")
+      Write-Host "Final p: $p"
       $changedParams += $p
     }
   }
