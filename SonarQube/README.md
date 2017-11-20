@@ -1,10 +1,10 @@
 # SonarQube C# Analysis
 
-Copy SonarQubeCsAnalysis.xml to <TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners (if this metarunner shall be accessible to all projects)
+Copy SonarQubeCsAnalysis.xml to `<TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners` (if this metarunner shall be accessible to all projects)
 
-files\scripts contents must be placed at %system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1 (so, you are in control where to place the script)
+`files\scripts` contents must be placed at `%system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1` (so, you are in control where to place the script)
 
-files\msbuild-sq-scanner content must be placed at %system.TeamCityCiToolsPath%\CI.Builds\Programs\msbuild-sq-scanner
+`files\msbuild-sq-scanner` content must be placed at `%system.TeamCityCiToolsPath%\CI.Builds\Programs\msbuild-sq-scanner`
 
 This meta-runner is designed to solve https://github.com/JetBrains/TeamCity.SonarQubePlugin/issues/40 (current TeamCity meta-runner does not support SonarC# v.6+ analyzer).
 
