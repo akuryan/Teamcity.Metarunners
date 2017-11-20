@@ -34,7 +34,7 @@
           <param name="jetbrains_powershell_execution" value="PS1" />
           <param name="jetbrains_powershell_minVersion" value="4.0" />
           <param name="jetbrains_powershell_noprofile" value="true" />
-          <param name="jetbrains_powershell_scriptArguments" value="-params '%sonar.parameters%' -sqScannerRoot %sonar.scanner.root%" />
+          <param name="jetbrains_powershell_scriptArguments" value="-params ""%sonar.parameters%"" -sqScannerRoot %sonar.scanner.root%" />
           <param name="jetbrains_powershell_script_file" value="%system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1" />
           <param name="jetbrains_powershell_script_mode" value="FILE" />
           <param name="teamcity.build.workingDir" value="%system.TeamCityCiToolsPath%\CI.Builds\Scripts\" />
