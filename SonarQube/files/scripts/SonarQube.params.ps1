@@ -20,18 +20,19 @@ if (![string]::IsNullOrEmpty($params)) {
       if ([string]::IsNullOrEmpty($p)) { continue }
 
       if ($p.Contains('`"')) {
-        $p = "/d:" + $p
+        $p = "/d:" + $p + " "
       }
       else {
-        $p = "/d:" + $p.replace("=", "=`"") + "`""
+        $p = "/d:" + $p.replace("=", "=`"") + "`"" + " "
       }
-
+      Write-Host "p: $p"
       $changedParams += $p
     }
   }
   else {
     $changedParams = $params
   }
+  $changedParams = $changedParams.replace("`n","").replace("`r","")
   Write-Host "changedParams: $changedParams"
   Write-Host "##teamcity[setParameter name='env.sonar.parameters' value='$changedParams']"
 }
