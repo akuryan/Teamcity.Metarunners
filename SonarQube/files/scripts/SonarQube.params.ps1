@@ -18,7 +18,7 @@ if (![string]::IsNullOrEmpty($params)) {
     $changedParams = ""
     foreach ($p in $paramsCollection) {
       if ([string]::IsNullOrEmpty($p)) { continue }
-      $p = "/d:" + $p
+      $p = "/d:" + $p.replace("=", "=`"") + "`""
       $changedParams += $p
     }
   }
