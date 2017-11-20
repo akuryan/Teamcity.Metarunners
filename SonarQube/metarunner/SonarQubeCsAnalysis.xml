@@ -44,7 +44,7 @@
       <runner name="Start scanner" type="simpleRunner">
         <parameters>
           <param name="command.executable" value="MSBuild.SonarQube.Runner.exe" />
-          <param name="command.parameters" value="begin /key:%sonar.projectKey% /name:%sonar.projectName% /version:%build.number% /d:sonar.host.url=%sonar.url% /d:sonar.login=%sonar.authKey% %env.sonar.parameters%"/>
+          <param name="command.parameters" value="begin /key:""%sonar.projectKey%"" /name:""%sonar.projectName%"" /version:""%build.number%"" /d:sonar.host.url=%sonar.url% /d:sonar.login=%sonar.authKey% %env.sonar.parameters%"/>
           <param name="teamcity.step.mode" value="default" />
         </parameters>
       </runner>
