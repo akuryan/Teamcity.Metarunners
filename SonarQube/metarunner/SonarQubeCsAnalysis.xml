@@ -12,7 +12,7 @@
       <param name="sonar.projectName" value="%system.teamcity.buildConfName% (%vcs.branch.name% branch)" spec="text description='SonarQube project name' label='SQ Project Name' validationMode='not_empty' " />
       <param name="sonar.url" value="" spec="text description='SonarQube URL' label='SQ URL' validationMode='not_empty' " />
       <param name="sonar.authKey" value="" spec="text description='SonarQube authehtication key' label='SQ AuthKey' validationMode='not_empty' " />
-      <param name="msbuild.target" value="Rebuild" spec="select data_2='Build' data_1='Rebuild' display='normal'" />
+      <param name="msbuild.target" value="Rebuild" spec="text description='MSBuild targets to execute' label='MSBuild targets' validationMode='not_empty' " />
       <param name="nuget.packages.source" value="%nuget.packages.source%" spec="text description='NuGet packages source feeds' label='Nuget packages sources' validationMode='not_empty' " />
     </parameters>
     <build-runners>
