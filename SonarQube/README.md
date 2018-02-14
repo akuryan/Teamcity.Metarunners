@@ -1,6 +1,6 @@
 # SonarQube C# Analysis
 
-Copy SonarQubeCsAnalysis.xml to `<TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners` (if this metarunner shall be accessible to all projects)
+Copy `metarunner\SonarQubeCsAnalysis.xml` to `<TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners` (if this metarunner shall be accessible to all projects)
 
 `files\scripts` contents must be placed at `%system.TeamCityCiToolsPath%\CI.Builds\Scripts\SonarQube.params.ps1` (so, you are in control where to place the script)
 
