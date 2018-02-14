@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta-runner name="New Relic:: Start/stop Synthetics monitors">
+  <description>Metarunner to manipulate Synthetics API</description>
+  <settings>
+    <parameters>
+      <param name="NewRelic.Synthetics.Api.version" value="0.0.1" spec="text description='Version of NewRelic.Synthetics.Api to restore' display='normal' label='API Nuget package version' validationMode='not_empty'" />
+      <param name="nuget.restore.target.folder" value="%system.teamcity.build.tempDir%" spec="text description='Target folder for Nuget package restore' display='normal' label='Nuget package target folder' validationMode='not_empty'"/>
+      <param name="system.SyntheticsApiKey" value="" spec="text description='Sysnthetics API admin key' display='normal' label='Key' validationMode='not_empty'"/>
+      <param name="system.EnableMonitors" value="False" spec="select data_2='True' data_1='False' display='normal' text description='Selector to disable or enable monitors' label='Enable monitors? '" />
+      <param name="system.MonitorNames" value="" spec="text description='Specify comma-separated monitor names to enable/disable' display='normal' label='Monitor names' "/>
+    </parameters>
+    <build-runners>
+      <runner name="Create packages.config" type="simpleRunner">
+        <parameters>
+          <param name="script.content" value="echo ^&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?^&gt;^&lt;packages^&gt;^&lt;package id=&quot;NewRelic.Synthetics.Api&quot; version=&quot;%NewRelic.Synthetics.Api.version%&quot; targetFramework=&quot;net452&quot; /^&gt;^&lt;/packages^&gt; &gt; %system.teamcity.build.tempDir%\packages.config" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="Restore API package from Nuget" type="jb.nuget.installer">
+        <parameters>
+          <param name="nuget.path" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%" />
+          <param name="nuget.restore.commandline" value="-PackagesDirectory %nuget.restore.target.folder%" />
+          <param name="nuget.updatePackages.mode" value="perConfig" />
+          <param name="nuget.use.restore" value="restore" />
+          <param name="sln.path" value="%system.teamcity.build.tempDir%\packages.config" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner name="Execute MsBuild" type="MSBuild">
+        <parameters>
+          <param name="build-file-path" value="%nuget.restore.target.folder%\NewRelic.Synthetics.Api.%NewRelic.Synthetics.Api.version%\build\NewRelic.Synthetics.Api.targets" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Sort" value="0" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Type" value="1" />
+          <param name="dotNetCoverage.NCover.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover3.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover3.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.PartCover.Reg" value="selected" />
+          <param name="dotNetCoverage.PartCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.PartCover.platformVersion" value="v2.0" />
+          <param name="msbuild_version" value="14.0" />
+          <param name="run-platform" value="x64" />
+          <param name="targets" value="StartStopMonitors" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolsVersion" value="14.0" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <requirements />
+  </settings>
+</meta-runner>
