@@ -18,8 +18,8 @@ Metarunner consists of following steps:
 
 1. Update PATH variable to hold information about where scanner is located
 
-1. Start sonarrunner as in [MSDN blog example|https://blogs.msdn.microsoft.com/devops/2015/09/28/quickstart-analyzing-net-projects-with-sonarqube-msbuild-or-visual-studio-online-and-third-party-analyzers-stylecop-resharper/]
+1. Start sonarrunner as in [MSDN blog example](https://blogs.msdn.microsoft.com/devops/2015/09/28/quickstart-analyzing-net-projects-with-sonarqube-msbuild-or-visual-studio-online-and-third-party-analyzers-stylecop-resharper/)
 
 1. Start Msbuild for solution
 
-1. Stop sonarrunner as in [MSDN blog example|https://blogs.msdn.microsoft.com/devops/2015/09/28/quickstart-analyzing-net-projects-with-sonarqube-msbuild-or-visual-studio-online-and-third-party-analyzers-stylecop-resharper/]
+1. Stop sonarrunner as in [MSDN blog example](https://blogs.msdn.microsoft.com/devops/2015/09/28/quickstart-analyzing-net-projects-with-sonarqube-msbuild-or-visual-studio-online-and-third-party-analyzers-stylecop-resharper/)
