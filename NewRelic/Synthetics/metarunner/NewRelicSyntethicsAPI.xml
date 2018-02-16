@@ -6,7 +6,7 @@
       <param name="NewRelic.Synthetics.Api.version" value="0.0.1" spec="text description='Version of NewRelic.Synthetics.Api to restore' display='normal' label='API Nuget package version' validationMode='not_empty'" />
       <param name="nuget.restore.target.folder" value="%system.teamcity.build.tempDir%" spec="text description='Target folder for Nuget package restore' display='normal' label='Nuget package target folder' validationMode='not_empty'"/>
       <param name="system.SyntheticsApiKey" value="" spec="text description='Synthetics API admin key' display='normal' label='Key' validationMode='not_empty'"/>
-      <param name="system.EnableMonitors" value="False" spec="select data_2='True' data_1='False' display='normal' text description='Selector to disable or enable monitors' label='Enable monitors?'" />
+      <param name="system.EnableMonitors" value="False" spec="select data_2='True' data_1='False' display='normal' " />
       <param name="system.MonitorNames" value="" spec="text description='Specify comma-separated monitor names to enable/disable' display='normal' label='Monitor names' "/>
     </parameters>
     <build-runners>
