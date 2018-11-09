@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta-runner name="Azure:: Costs saver">
+    <description>Up-/down- scales resources at Azure to save on costs</description>
+    <settings>
+        <parameters>
+            <!-- Metarunner editable parameters is defined here -->
+            <param name="nuget.name" value="CostsSaver-Azure.PowerShell" spec="text description='Nuget package name' display='hidden' readOnly='true' "/>
+            <param name="azure.ApplicationId" value="" spec="text description='Azure Application ID' display='normal' validationMode='not_empty'" />
+            <param name="azure.ApplicationSecret" value="" spec="password description='Azure Application ID' display='normal' validationMode='not_empty'" />
+            <param name="azure.TenantId" value="" spec="text description='Azure Tenant ID' display='normal' validationMode='not_empty'" />
+            <param name="azure.SubscriptionId" value="" spec="text description='Azure Subscription ID' display='normal' validationMode='not_empty'" />
+            <param name="costsSaver.Downscale" value="False" spec="select data_2='True' data_1='False' display='normal' description='Downscale resources?' " />
+            <param name="costsSaver.ResourceGroupName" value="" spec="text description='Resource Group name' display='normal' validationMode='not_empty'" />
+        </parameters>
+        <build-runners>
+            <!-- Build runners is defined here -->
+            <runner name="Install latest CostsSaver-Azure.PowerShell nuget" type="simpleRunner">
+                <parameters>
+                    <param name="command.executable" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%\tools\NuGet.exe" />
+                    <param name="command.parameters" value="install %nuget.name% -OutputDirectory %system.teamcity.build.tempDir%"/>
+                    <param name="teamcity.step.mode" value="default" />
+                </parameters>
+            </runner>
+            <runner name="Move nuget to usable place" type="simpleRunner">
+                <parameters>
+                    <param name="script.content"><![CDATA[
+                        pushd %system.teamcity.build.tempDir%\%nuget.name%*
+                        mkdir %nuget.target.path%
+                        xcopy tools\* %system.teamcity.build.tempDir% /F /S /Q /Y
+                        popd
+                        ]]>
+                    </param>
+                    <param name="teamcity.step.mode" value="default" />
+                    <param name="use.custom.script" value="true" />
+                </parameters>
+            </runner>
+            <runner name="Costs saver execution" type="jetbrains_powershell">
+                <param name="jetbrains_powershell_additionalArguments" value="-NoLogo -NonInteractive -ExecutionPolicy Unrestricted" />
+                <param name="jetbrains_powershell_bitness" value="x86" />
+                <param name="jetbrains_powershell_errorToError" value="true" />
+                <param name="jetbrains_powershell_execution" value="PS1" />
+                <param name="jetbrains_powershell_minVersion" value="5.0" />
+                <param name="jetbrains_powershell_noprofile" value="true" />
+                <param name="teamcity.step.mode" value="default" />
+                <param name="jetbrains_powershell_script_mode" value="CODE" />
+                <param name="jetbrains_powershell_script_code"><![CDATA[
+                    $creds = New-Object System.Management.Automation.PSCredential (%azure.ApplicationId%, %azure.ApplicationSecret%);
+                    Login-AzureRmAccount -Credential $creds -ServicePrincipal -TenantId %azure.TenantId%;
+                    Select-AzureRmSubscription -SubscriptionId %azure.SubscriptionId%
+
+                    Write-Verbose "In input costsSaver.Downscale we have %costsSaver.Downscale%"
+                    if ("%costsSaver.Downscale%".ToLower() -eq "true") {
+                        $Downscale = $true;
+                    } else {
+                        $Downscale = $false;
+                    }
+
+                    Write-Host "We are going to downscale? $Downscale";
+                    Write-Host "Resources will be selected from %costsSaver.ResourceGroupName% resource group";
+
+                    Import-Module %system.teamcity.build.tempDir%\azure-costs-saver.psm1;
+
+                    Set-ResourceSizesForCostsSaving -ResourceGroupName "%costsSaver.ResourceGroupName%" -Downscale $Downscale -executionEnv "teamcity";               
+                ]]></param>
+            </runner>
+        </build-runners>
+        <requirements />
+    </settings>
+</meta-runner>

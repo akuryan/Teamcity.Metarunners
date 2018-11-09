@@ -35,26 +35,8 @@ Please, read [post](https://colours.nl/azure-costs-saver) detailing usage and po
 
 ## Configuration
 
+Create [Azure Service principle](https://docs.microsoft.com/en-us/azure/azure-stack/user/azure-stack-create-service-principals). You will need your service principle application ID, key, your Azure Tenant ID and your Azure Subscription ID.
 
 
 ## Explanation
 
-
-
-### Manual package preparation
-
-Install [nuget package CostsSaver-Azure.PowerShell](https://www.nuget.org/packages/CostsSaver-Azure.PowerShell/) in temp directory. Then copy psm1 files from ```tools``` folder of installed package to ```ps_modules\CostsSaver-Azure.PowerShell\```
-Then, you'll be able to compile installable package for VSTS/TFS
-
-```cmd
-rem Remove all possible installations of previous module versions (if any)
-for /D %f in ("%temp%\CostsSaver-Azure.PowerShell*") do rmdir %f /s /q
-rem Install module from nuget
-nuget install CostsSaver-Azure.PowerShell -OutputDirectory %Temp%
-pushd %temp%\CostsSaver-Azure.PowerShell*
-rem Create directory for module
-mkdir yourPathHere\ps_modules\CostsSaver-Azure.PowerShell\
-rem Copy module to directory
-xcopy tools\azure-costs-saver.psm1 yourPathHere\ps_modules\CostsSaver-Azure.PowerShell\ /F /S /Q /Y
-popd
-```
