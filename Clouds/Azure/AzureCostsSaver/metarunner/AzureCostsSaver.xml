@@ -6,7 +6,7 @@
             <!-- Metarunner editable parameters is defined here -->
             <param name="nuget.name" value="CostsSaver-Azure.PowerShell" spec="text description='Nuget package name' display='hidden' readOnly='true' "/>
             <param name="azure.ApplicationId" value="" spec="text description='Azure Application ID' display='normal' validationMode='not_empty'" />
-            <param name="azure.ApplicationSecret" value="" spec="password description='Azure Application Secret Key' display='normal' validationMode='not_empty'" />
+            <param name="azure.ApplicationSecret" value="" spec="password description='Azure Application Secret Key; you are welcome to use standard TeamCity references here (%varName%)' display='normal' validationMode='not_empty'" />
             <param name="azure.TenantId" value="" spec="text description='Azure Tenant ID' display='normal' validationMode='not_empty'" />
             <param name="azure.SubscriptionId" value="" spec="text description='Azure Subscription ID' display='normal' validationMode='not_empty'" />
             <param name="costsSaver.Downscale" value="False" spec="select data_2='True' data_1='False' display='normal' description='Downscale resources?' " />
