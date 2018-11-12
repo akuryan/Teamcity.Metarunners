@@ -2,7 +2,7 @@
 
 #authorize at Azure
 $applicationId = "%azure.ApplicationId%";
-$securePassword = "%azure.ApplicationSecret%";
+$securePassword = ConvertTo-SecureString "%azure.ApplicationSecret%" -AsPlainText -Force;
 $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $applicationId, $securePassword;
 Login-AzureRmAccount -Credential $credential -ServicePrincipal -TenantId "%azure.TenantId%";
 Select-AzureRmSubscription -SubscriptionId "%azure.SubscriptionId%";
@@ -13,9 +13,6 @@ if ("%costsSaver.Downscale%".ToLower() -eq "true") {
 } else {
     $Downscale = $false;
 }
-
-Write-Host "We are going to downscale? $Downscale";
-Write-Host "Resources will be selected from %costsSaver.ResourceGroupName% resource group";
 
 Import-Module %system.teamcity.build.tempDir%\azure-costs-saver.psm1;
 

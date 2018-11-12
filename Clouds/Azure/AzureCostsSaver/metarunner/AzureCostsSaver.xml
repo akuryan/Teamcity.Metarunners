@@ -23,7 +23,6 @@
         <runner name="Move nuget to usable place" type="simpleRunner">
             <parameters>
             <param name="script.content"><![CDATA[pushd %system.teamcity.build.tempDir%\%nuget.name%*
-    mkdir %nuget.target.path%
     xcopy tools\* %system.teamcity.build.tempDir% /F /S /Q /Y
     popd]]></param>
             <param name="teamcity.step.mode" value="default" />
@@ -36,7 +35,7 @@
             <param name="jetbrains_powershell_execution" value="PS1" />
             <param name="jetbrains_powershell_noprofile" value="true" />
             <param name="jetbrains_powershell_script_code"><![CDATA[$applicationId = "%azure.ApplicationId%";
-    $securePassword = "%azure.ApplicationSecret%";
+    $securePassword = ConvertTo-SecureString "%azure.ApplicationSecret%" -AsPlainText -Force;
     $credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $applicationId, $securePassword;
     Login-AzureRmAccount -Credential $credential -ServicePrincipal -TenantId "%azure.TenantId%";
     Select-AzureRmSubscription -SubscriptionId "%azure.SubscriptionId%";
@@ -47,9 +46,6 @@
     } else {
         $Downscale = $false;
     }
-
-    Write-Host "We are going to downscale? $Downscale";
-    Write-Host "Resources will be selected from %costsSaver.ResourceGroupName% resource group";
 
     Import-Module %system.teamcity.build.tempDir%\azure-costs-saver.psm1;
 
