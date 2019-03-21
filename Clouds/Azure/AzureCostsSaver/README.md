@@ -9,17 +9,7 @@ SQL databases sizes tags are stored on SQL server resource, as they tend to diss
 
 ## Script location
 
-To improve reusability, script itself have been moved to Nuget - [package CostsSaver-Azure.PowerShell](https://www.nuget.org/packages/CostsSaver-Azure.PowerShell/); sources could be reviewed at other [repository](https://github.com/akuryan/Powershell.Modules/blob/master/src/Azure/BudgetSaver/tools/azure-costs-saver.psm1)
-
-## Issues
-
-1. Script will silently fail if you try to run upscaling before downscaling
-
-1. Script will fail if Tags are missing
-
-1. There is no way for web apps to be downscaled to Basic, as at this point of time I could not check, if there is a staging slot on web app present (Basic does not allow slots at all)
-
-1. You shall be executing at VS2017 Hosted pool, if your web apps are running on PremiumV2 tier.
+To improve reusability, script itself have been moved to Nuget - [package CostsSaver-Azure.PowerShell](https://www.nuget.org/packages/CostsSaver-Azure.PowerShell/); sources could be reviewed at other [repository](https://github.com/akuryan/Powershell.Modules/blob/master/src/Azure/BudgetSaver/tools/azure-costs-saver.psm1). Also, see this [explanation](https://github.com/akuryan/Powershell.Modules/tree/master/src/Azure/BudgetSaver)
 
 ## Use case
 
