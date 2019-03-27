@@ -4,5 +4,10 @@ Metarunner to execute [WhiteSource unified agent](https://github.com/whitesource
 
 ## Installation
 
+Copy `metarunner\WssAnalysis.xml` to `<TeamCityDataDir>\config\projects\_Root\pluginData\metaRunners` (if this metarunner shall be accessible to all projects)
+
 ## Configuration
 
+## Execution plan
+
+Metarunner will install latest [NuGet package](https://www.nuget.org/packages/Scanners-WhiteSource.PowerShell/) and will execute module to scan your sources via unified agent.

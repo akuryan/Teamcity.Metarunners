@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta-runner name="Analysis:: Whitesouce scanner">
+    <description>Up-/down- scales resources at Azure to save on costs</description>
+    <settings>
+        <parameters>
+            <!-- Metarunner editable parameters is defined here -->
+            <param name="nuget.name" value="Scanners-WhiteSource.PowerShell" spec="text description='Nuget package name' display='hidden' readOnly='true' "/>
+            <param name="wssScanner.forceDownload" value="False" spec="select data_2='True' data_1='False' display='normal' label='Force scanner redownload? ' description='If set to True, scanner will be redownloaded on each run; otherwise - it will be redownloaded if it is 15 days old.' " />
+            <param name="wssScanner.scannerTargetPath" value="" spec="text label='Download scanner to ' description='If not specified - scanner will be downloaded to temp folder on agent.' display='normal' " />
+            <param name="wssScanner.projectConfig" value="" spec="text label='Project WSS configuration ' description='If not specified - default configuration will be used.' display='normal' " />
+            <param name="wssScanner.projectName" value="%system.teamcity.buildConfName%" spec="text label='Project name for WSS ' description='Shall be specified, if there is no WSS config for this project' display='normal' " />
+            <param name="wssScanner.version" value="%build.number%" spec="text label='Project version for WSS ' description='Specified project version' display='normal' validationMode='not_empty' " />
+            <param name="wssScanner.scanPattern" value="**/*.cs **/*.js **/*.scss **/*.jsx" spec="text label='File scan pattern ' description='Comma, space or line separated list of Ant-style GLOB patterns specifying which files to include in the scan.' display='normal' " />
+            <param name="wssScanner.apiKey" value="" spec="password label='API Key for WSS ' description='API key' display='normal' validationMode='not_empty' " />
+            <param name="wssScanner.scanPath" value="%teamcity.build.checkoutDir%" spec="text label='Scan path ' description='' display='normal' validationMode='not_empty' " />
+        </parameters>
+        <build-runners>
+        <runner name="Install latest Scanners-WhiteSource.PowerShell nuget" type="simpleRunner">
+            <parameters>
+            <param name="command.executable" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%\tools\NuGet.exe" />
+            <param name="command.parameters" value="install %nuget.name% -OutputDirectory %system.teamcity.build.tempDir%" />
+            <param name="teamcity.step.mode" value="default" />
+            </parameters>
+        </runner>
+        <runner name="Move nuget to usable place" type="simpleRunner">
+            <parameters>
+            <param name="script.content"><![CDATA[pushd %system.teamcity.build.tempDir%\%nuget.name%*
+    xcopy tools\* %system.teamcity.build.tempDir% /F /S /Q /Y
+    popd]]></param>
+            <param name="teamcity.step.mode" value="default" />
+            <param name="use.custom.script" value="true" />
+            </parameters>
+        </runner>
+        <runner name="Costs saver execution" type="jetbrains_powershell">
+            <parameters>
+            <param name="jetbrains_powershell_additionalArguments" value="-NoLogo -NonInteractive -ExecutionPolicy Unrestricted" />
+            <param name="jetbrains_powershell_execution" value="PS1" />
+            <param name="jetbrains_powershell_noprofile" value="true" />
+            <param name="jetbrains_powershell_script_code"><![CDATA[Write-Host "In input wssScanner.forceDownload we have %wssScanner.forceDownload%";
+    if ("%wssScanner.forceDownload%".ToLower() -eq "true") {
+        $forceDownload = $true;
+    } else {
+        $forceDownload = $false;
+    }
+
+    Import-Module %system.teamcity.build.tempDir%\whitesource-scanner.psm1;
+
+    Scan-Sources -ForceDownload $forceDownload -AgentPath "%wssScanner.scannerTargetPath%" -ProjectName "%wssScanner.projectName%" -WssConfigurationPath "%wssScanner.projectConfig%" -Version "%wssScanner.version%" -FileScanPattern "%wssScanner.scanPattern%" -WssApiKey "%wssScanner.apiKey%" -ScanPath "%wssScanner.scanPath%";]]></param>
+            <param name="jetbrains_powershell_script_mode" value="CODE" />
+            <param name="teamcity.step.mode" value="default" />
+            </parameters>
+        </runner>
+        </build-runners>
+        <requirements />
+    </settings>
+</meta-runner>
