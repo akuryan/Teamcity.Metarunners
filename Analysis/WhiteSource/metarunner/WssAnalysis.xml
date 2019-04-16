@@ -31,7 +31,7 @@
             <param name="use.custom.script" value="true" />
             </parameters>
         </runner>
-        <runner name="Costs saver execution" type="jetbrains_powershell">
+        <runner name="Whitesource Scanner execution" type="jetbrains_powershell">
             <parameters>
             <param name="jetbrains_powershell_additionalArguments" value="-NoLogo -NonInteractive -ExecutionPolicy Unrestricted" />
             <param name="jetbrains_powershell_execution" value="PS1" />
